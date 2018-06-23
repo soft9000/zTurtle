@@ -1,5 +1,5 @@
 '''
-Part of an upcomming training offering on Trurle Graphics,
+Part of an upcomming training offering on Turtle Graphics,
 I thought that we would share ZBoard with our friends.
 
 This ZBoard class is YA contribution to the Public Domain.
