@@ -1,6 +1,6 @@
-# Cricular, Reflexive, Polylogical Symmetries (CRPS)
+# Cricular, Angular, & Reflexive, Polylogical Symmetries (CARPS)
 #
-# 2020/06/05, Rev 1.0
+# 2020/06/05, Rev 1.01
 # -Randall Nagy
 
 import turtle
@@ -9,7 +9,7 @@ class Poly360(turtle.Turtle):
     ''' Alternate between rendering a LEFT and a RIGHT
         colorized-polygon so as to visualize a single,
         closed, fractal image - whose number of shapes
-        are circularly-reated to the number of the sides
+        are circularly-related to the number of the sides
         in the polygon.
     '''
 
@@ -20,6 +20,7 @@ class Poly360(turtle.Turtle):
         self._frac = 360/sides
         self.ecolor = eclr
         self.ocolor = oclr
+        self._draglines = False
 
     def _left(self, depth):
         if depth < 0:
@@ -42,8 +43,8 @@ class Poly360(turtle.Turtle):
         return depth
 
     def draw(self, xpos, ypos):
-        ''' Rendering is fast when using same colors.
-            Automatically uses .draw3D(), when best.
+        ''' Rendering can be fast when using the same colors.
+            We will automatically uses .draw3D(), when best.
         '''
         if self.ecolor != self.ocolor:
             return self.draw3D(xpos, ypos) # Concoct z-order
@@ -54,8 +55,12 @@ class Poly360(turtle.Turtle):
         while depth:
             self._right(depth)
             depth = self._left(depth)
+            if not self._draglines:
+                self.up()
             self.forward(self.line)
             self.right(self._frac)
+            if not self._draglines:
+                self.down()
 
     def draw3D(self, xpos, ypos):
         ''' Simply tell us where to draw. The rest is fractastic. '''
@@ -65,20 +70,24 @@ class Poly360(turtle.Turtle):
         depth = self._sides
         while depth: # Base colorization (z+0)
             depth = self._left(depth)
-            self.up()
+            if not self._draglines:
+                self.up()
             self.forward(self.line)
             self.right(self._frac)
-            self.down()
+            if not self._draglines:
+                self.down()
         depth = self._sides
         while depth: # Real colorization (z+1)
             depth = self._right(depth)
-            self.up()
+            if not self._draglines:
+                self.up()
             self.forward(self.line)
             self.right(self._frac)
-            self.down()
-        
+            if not self._draglines:
+                self.down()
+                
     @staticmethod
-    def ShapeShow(speed=0, pen=3, turtle_=False, color1='red', color2='green'):
+    def ShapeShow(speed=0, pen=3, turtle_=False, color1='blue', color2='green'):
         ''' The test pattern draws many polygons to
         demonstrate an observed principal of circular,
         geometric, side-to-circle reflexitivity.
@@ -101,6 +110,7 @@ class Poly360(turtle.Turtle):
             fract.up();fract.goto(xpos - 90, ypos - 50)
             fract.write(f"{sides:02} sides",
                         font=("Arial", 14, "bold"))
+            fract.down()
             if which % 3 == 0:
                 xstart += 200
                 ystart = YSTART
@@ -124,6 +134,6 @@ class Poly360(turtle.Turtle):
 
 
 if __name__ == '__main__':
-    # Poly360.FastShapeShow(-1, 1)
-    # Poly360.ShapeShow(6, 2, True)
+    Poly360.FastShapeShow(-1, 1)
+    Poly360.ShapeShow(6, 2, True)
     Poly360.BestOfShow(8, 9, 5)
